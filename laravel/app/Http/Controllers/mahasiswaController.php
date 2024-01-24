@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class mahasiswaController extends Controller
 {
@@ -12,7 +13,8 @@ class mahasiswaController extends Controller
      */
     public function index()
     {
-        return view('mahasiswa.index');
+        $data = mahasiswa::orderBy('nim', 'desc')->paginate(1);
+        return view('mahasiswa.index')->with('data', $data);
     }
 
     /**
@@ -28,6 +30,20 @@ class mahasiswaController extends Controller
      */
     public function store(Request $request)
     {
+        Session::flash('nim', $request->nim);
+        Session::flash('nama', $request->nama);
+        Session::flash('jurusan', $request->jurusan);
+        $request->validate([
+            'nim' => 'required|numeric|unique:mahasiswas,nim',
+            'nama' => 'required',
+            'jurusan' => 'required',
+        ], [
+            'nim.required' => 'NIM must be filled in',
+            'nim.numeric' => 'NIM must be a number',
+            'nim.unique' => 'NIM The number you entered is already registered',
+            'nama.required' => 'Nama must be filled in',
+            'jurusan.required' => 'Jurusan must be filled in',
+        ]);
         $data = [
             'nim' => $request->nim,
             'nama' => $request->nama,
@@ -35,7 +51,7 @@ class mahasiswaController extends Controller
         ];
 
         mahasiswa::create($data);
-        return 'HI';
+        return redirect()->to('mahasiswa')->with('success', 'successfully added data');
     }
 
     /**
