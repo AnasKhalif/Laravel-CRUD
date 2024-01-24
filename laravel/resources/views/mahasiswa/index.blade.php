@@ -27,7 +27,7 @@
                         <td>{{$item->nama}}</td>
                         <td>{{$item->jurusan}}</td>
                         <td>
-                            <a href='' class="btn btn-warning btn-sm">Edit</a>
+                            <a href='{{url('mahasiswa/'.$item->nim.'/edit') }}' class="btn btn-warning btn-sm">Edit</a>
                             <a href='' class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>

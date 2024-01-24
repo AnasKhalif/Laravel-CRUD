@@ -65,17 +65,32 @@ class mahasiswaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($nim)
     {
-        //
+        $data = mahasiswa::where('nim', $nim)->first();
+        return view('mahasiswa.edit')->with('data', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $nim)
     {
-        //
+        $request->validate([
+
+            'nama' => 'required',
+            'jurusan' => 'required',
+        ], [
+            'nama.required' => 'Nama must be filled in',
+            'jurusan.required' => 'Jurusan must be filled in',
+        ]);
+        $data = [
+            'nama' => $request->nama,
+            'jurusan' => $request->jurusan,
+        ];
+
+        mahasiswa::where('nim', $nim)->update($data);
+        return redirect()->to('mahasiswa')->with('success', 'successfully added data');
     }
 
     /**
