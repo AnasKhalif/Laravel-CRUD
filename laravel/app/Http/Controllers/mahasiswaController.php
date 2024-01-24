@@ -13,7 +13,7 @@ class mahasiswaController extends Controller
      */
     public function index()
     {
-        $data = mahasiswa::orderBy('nim', 'desc')->paginate(1);
+        $data = mahasiswa::orderBy('nim', 'desc')->paginate(3);
         return view('mahasiswa.index')->with('data', $data);
     }
 
@@ -90,14 +90,15 @@ class mahasiswaController extends Controller
         ];
 
         mahasiswa::where('nim', $nim)->update($data);
-        return redirect()->to('mahasiswa')->with('success', 'successfully added data');
+        return redirect()->to('mahasiswa')->with('success', 'successfully update data');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($nim)
     {
-        //
+        mahasiswa::where('nim', $nim)->delete();
+        return redirect()->to('mahasiswa')->with('success', 'Successfully delete data');
     }
 }

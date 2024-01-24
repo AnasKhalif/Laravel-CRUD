@@ -28,7 +28,11 @@
                         <td>{{$item->jurusan}}</td>
                         <td>
                             <a href='{{url('mahasiswa/'.$item->nim.'/edit') }}' class="btn btn-warning btn-sm">Edit</a>
-                            <a href='' class="btn btn-danger btn-sm">Delete</a>
+                            <form onsubmit="return confirm('sure it will delete the data ?')" class="d-inline" action="{{ url('mahasiswa/'.$item->nim) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" name="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
                         </td>
                     </tr>
                     <?php $i++ ?>
